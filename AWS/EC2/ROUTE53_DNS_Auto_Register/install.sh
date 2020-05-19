@@ -3,13 +3,13 @@ echo -e "\e[1;33m
 Preparando ambiente
 ===========================================================================================================\e[0m"
 echo -e "\e[1;33mAtualiza pacotes no sistema...\e[0m"
-sudo yum update -y
+yum update -y
 
 echo -e "\e[1;33mInstala e configura AWS CLI...\e[0m"
-sudo yum install -y aws-cli
+yum install -y aws-cli
 
 echo -e "\e[1;33mInstala interpretador JSON - JQ JSON Client...\e[0m"
-sudo yum install -y jq
+yum install -y jq
 
 echo -e "\e[1;33m
 ===========================================================================================================
@@ -87,19 +87,19 @@ echo -e "\e[1;33mProcesso finalizado!\e[0m"
 EOScript
 
 echo -e "\e[1;33mConfigura script para execução no Startup...\e[0m"
-sudo mkdir /etc/route53
-sudo mv auto-register-dns.sh /etc/route53/auto-register-dns.sh
-sudo chmod +x /etc/route53/auto-register-dns.sh
+mkdir /etc/route53
+mv auto-register-dns.sh /etc/route53/auto-register-dns.sh
+chmod +x /etc/route53/auto-register-dns.sh
 
-sudo cp /etc/rc.d/rc.local /etc/rc.d/rc.local.bkp
+cp /etc/rc.d/rc.local /etc/rc.d/rc.local.bkp
 cp /etc/rc.d/rc.local rc.local
 
 echo "/etc/route53/auto-register-dns.sh" >> rc.local
 
-sudo mv rc.local /etc/rc.d/rc.local
+mv rc.local /etc/rc.d/rc.local
 
-sudo chmod u+x /etc/rc.d/rc.local
-sudo systemctl start rc-local
-sudo systemctl enable rc-local
+chmod u+x /etc/rc.d/rc.local
+systemctl start rc-local
+systemctl enable rc-local
 
 echo -e "\e[1;33mProcesso finalizado!\e[0m"
