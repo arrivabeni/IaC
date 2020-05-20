@@ -25,14 +25,14 @@ echo -e "\e[1;33mUsuário logado:\e[0m"
 whoami
 
 echo -e "\e[1;33mObtém no user data da instância as variáveis...\e[0m"
-DNS=\$(curl 'http://instance-data/latest/user-data' | jq -r '.dns')
-SUFFIX=\$(curl 'http://instance-data/latest/user-data' | jq -r '.suffix')
-SUFFIX_BR=\$(curl 'http://instance-data/latest/user-data' | jq -r '.suffix_br')
-ZONE=\$(curl 'http://instance-data/latest/user-data' | jq -r '.zone')
-ZONE_BR=\$(curl 'http://instance-data/latest/user-data' | jq -r '.zone_br')
-AWS_ACCESS_KEY_ID=\$(curl 'http://instance-data/latest/user-data' | jq -r '.i')
-AWS_SECRET_ACCESS_KEY=\$(curl 'http://instance-data/latest/user-data' | jq -r '.k')
-AWS_DEFAULT_REGION=\$(curl 'http://instance-data/latest/user-data' | jq -r '.r')
+export DNS=\$(curl 'http://instance-data/latest/user-data' | jq -r '.dns')
+export SUFFIX=\$(curl 'http://instance-data/latest/user-data' | jq -r '.suffix')
+export SUFFIX_BR=\$(curl 'http://instance-data/latest/user-data' | jq -r '.suffix_br')
+export ZONE=\$(curl 'http://instance-data/latest/user-data' | jq -r '.zone')
+export ZONE_BR=\$(curl 'http://instance-data/latest/user-data' | jq -r '.zone_br')
+export AWS_ACCESS_KEY_ID=\$(curl 'http://instance-data/latest/user-data' | jq -r '.i')
+export AWS_SECRET_ACCESS_KEY=\$(curl 'http://instance-data/latest/user-data' | jq -r '.k')
+export AWS_DEFAULT_REGION=\$(curl 'http://instance-data/latest/user-data' | jq -r '.r')
 
 echo -e "\e[1;33mObtém o IP público da instância...\e[0m"
 IPV4=\$(curl http://instance-data/latest/meta-data/public-ipv4)
