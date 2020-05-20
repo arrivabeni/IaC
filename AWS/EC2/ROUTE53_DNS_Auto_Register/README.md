@@ -1,5 +1,5 @@
 # Registro automatizado no DNS (Route53)
-Script para registro automático na inicialização de instância EC2 na AWS com Linux AWS AMI 2 para registro em até 2 domínios.
+Script para registro automático na inicialização de instância EC2 na AWS com Linux AWS AMI 2 para registro no DNS (Route53).
 
 ## Instalação
 - Crie um usuário:
@@ -44,24 +44,26 @@ Script para registro automático na inicialização de instância EC2 na AWS com
 
 - Insira o JSON com os dados no "User Data" da instância EC2:
 
-    - ```dns```: o nome DNS.
-    - ```suffix```: o primeiro domínio.
-    - ```suffix_br```: o segundo domínio.
+    - ```name```: o nome DNS.
+    - ```suffix```: o domínio (deve coincidir com o domínio da zona).
     - ```zone```: ID da zona do primeiro domínio.
-    - ```zone_br```: ID da zona do segundo domínio.
     - ```i```: ID da chave de acesso da AWS.
     - ```i```: Chave de acesso AWS.
     - ```i```: Região da AWS.
 ```
 {
-	"dns":"host01",
-	"suffix":".mydomain.com",
-	"suffix_br":".mydomain.com.br",
-	"zone":"XPTO12345",
-	"zone_br":"XPTO12345A",
-	"i":"XXXXXXXXXXXXXXXX",
-	"k":"yyyyyyyyyyyyyyyyyyyy",
-	"r":"us-east-1"
+	"dns": [{
+		"name": "host01",
+		"suffix": ".mydomain.com",
+		"zone": "XPTO12345"
+	}, {
+		"name": "host02",
+		"suffix": ".mydomain.com.br",
+		"zone": "XPTO12345A"
+	}],
+	"i": "XXXXXXXXXXXXXXXX",
+	"k": "yyyyyyyyyyyyyyyyyyyy",
+	"r": "us-east-2"
 }
 ```
 

@@ -25,11 +25,7 @@ echo -e "\e[1;33mUsuário logado:\e[0m"
 whoami
 
 echo -e "\e[1;33mObtém no user data da instância as variáveis...\e[0m"
-export DNS=\$(curl 'http://instance-data/latest/user-data' | jq -r '.dns')
-export SUFFIX=\$(curl 'http://instance-data/latest/user-data' | jq -r '.suffix')
-export SUFFIX_BR=\$(curl 'http://instance-data/latest/user-data' | jq -r '.suffix_br')
-export ZONE=\$(curl 'http://instance-data/latest/user-data' | jq -r '.zone')
-export ZONE_BR=\$(curl 'http://instance-data/latest/user-data' | jq -r '.zone_br')
+export DNS=\$(curl 'http://instance-data/latest/user-data')
 export AWS_ACCESS_KEY_ID=\$(curl 'http://instance-data/latest/user-data' | jq -r '.i')
 export AWS_SECRET_ACCESS_KEY=\$(curl 'http://instance-data/latest/user-data' | jq -r '.k')
 export AWS_DEFAULT_REGION=\$(curl 'http://instance-data/latest/user-data' | jq -r '.r')
@@ -40,48 +36,32 @@ echo \$IPV4
 
 echo -e "\e[1;33mRegistra DNS no Route53...\e[0m"
 
-if [ "\$SUFFIX" != "" ]
-then
-
-echo -e "\e[1;33mRegistrando \$DNS\$SUFFIX...\e[0m"
-cat > auto-register-dns << EOF
+for k in \$(jq '.dns | keys | .[]' <<< "\$DNS"); do
+	value=\$(jq -r ".dns[\$k]" <<< "\$DNS");
+	name=\$(jq -r ".name" <<< "\$value")
+	suffix=\$(jq -r ".suffix" <<< "\$value")
+	zone=\$(jq -r ".zone" <<< "\$value")
+	
+    echo -e "\e[1;33mRegistrando \$name\$suffix...\e[0m"
+	
+    cat > auto-register-dns << EOF
 {
 "Comment": "EC2 Auto Registro",
 "Changes": [{
 "Action": "UPSERT",
 "ResourceRecordSet": {
-"Name": "\$DNS\$SUFFIX",
+"Name": "\$name\$suffix",
 "Type": "A",
 "TTL": 60,
 "ResourceRecords": [{
 "Value": "\$IPV4"
 }]}}]}
 EOF
-aws route53 change-resource-record-sets --hosted-zone-id \$ZONE --change-batch file://auto-register-dns
-rm auto-register-dns
 
-fi
+    aws route53 change-resource-record-sets --hosted-zone-id \$zone --change-batch file://auto-register-dns
+    rm auto-register-dns
 
-if [ "\$SUFFIX_BR" != "" ]
-then
-echo -e "\e[1;33mRegistrando \$DNS\$SUFFIX_BR...\e[0m"
-cat > auto-register-dns-br << EOF
-{
-"Comment": "EC2 Auto Registro",
-"Changes": [{
-"Action": "UPSERT",
-"ResourceRecordSet": {
-"Name": "\$DNS\$SUFFIX_BR",
-"Type": "A",
-"TTL": 60,
-"ResourceRecords": [{
-"Value": "\$IPV4"
-}]}}]}
-EOF
-aws route53 change-resource-record-sets --hosted-zone-id \$ZONE_BR --change-batch file://auto-register-dns-br
-rm auto-register-dns-br
-
-fi
+done
 
 echo -e "\e[1;33mProcesso finalizado!\e[0m"
 EOScript
