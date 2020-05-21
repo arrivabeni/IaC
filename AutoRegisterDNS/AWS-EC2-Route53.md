@@ -2,11 +2,14 @@
 Script para registro automático na inicialização de instância EC2 na AWS com Linux AWS AMI 2 para registro no DNS (Route53).
 
 ## Instalação
-- Crie um usuário:
+Alguns passos são omitidos, pois suponho que a pessoa que executará estes passos já utiliza AWS.
+
+1. Criação do usuário:
     
     Para execução será necessário criar um usuário na AWS.
 
-    - Crie uma política conforme o JSON abaixo (substitua os IDs das zonas Route53 "XXXXXX" e "YYYYYY" ):
+    a. Crie uma política conforme o JSON abaixo (substitua os IDs das zonas Route53 "XXXXXX" e "YYYYYY" ):
+    **Importante**: *Lembre-se de adicionar todas as zonas que serão registradas com o script*
 
     ```
     {
@@ -35,14 +38,13 @@ Script para registro automático na inicialização de instância EC2 na AWS com
     }
     ```
 
-    - Associe esta política à um grupo, por exemplo "Route53_AutoRegister_DNS".
+    b. Associe esta política à um grupo, por exemplo "Route53_AutoRegister_DNS".
 
-    - Crie um usuário e associe-o ao grupo recém criado e ao grupo "AmazonEC2ReadOnlyAccess".
+    c. Crie um usuário e associe-o ao grupo recém criado e ao grupo "AmazonEC2ReadOnlyAccess".
 
-    - Gere a chave de acesso do usuário para utilizar no script.
+    d. Gere a chave de acesso do usuário para utilizar no script.
 
-
-- Insira o JSON com os dados no "User Data" da instância EC2:
+2. Insira o JSON com os dados no "User Data" da instância EC2:
 
     - ```name```: o nome DNS.
     - ```suffix```: o domínio (deve coincidir com o domínio da zona).
@@ -67,11 +69,11 @@ Script para registro automático na inicialização de instância EC2 na AWS com
 }
 ```
 
-- Rode o script de instalação:
+3. Rode o script de instalação:
 ```
-wget https://raw.githubusercontent.com/arrivabeni/IaC/master/AWS/EC2/ROUTE53_DNS_Auto_Register/install.sh
-sudo chmod +x install.sh
-sudo ./install.sh
+wget https://raw.githubusercontent.com/arrivabeni/InfrastructureTips/master/AutoRegisterDNS/auto-register-dns-install.sh
+sudo chmod +x auto-register-dns-install.sh
+sudo ./auto-register-dns-install.sh
 ```
 
-- Pronto, ao reinializar a instância ela se auto registrará no Route53.
+4. Pronto, ao reinializar a instância ela se auto registrará no Route53.

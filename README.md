@@ -1,15 +1,10 @@
-# IaC
-Scripts for Infrastructure as Code (Or other automations)
+# InfrastructureTips
+Dicas para facilitar atividades de infraestrutura que estou reunindo para facilitar meu dia a dia.
 
 
 
+## Script para auto registro DNS
+[Scripts para auto registro DNS](AutoRegisterDNS/README.md)
 
-### Usando S3 para redirecionar tráfego
-
-Supondo que se quer redirecionar as chamadas do endereço ```origin.domain.com``` para ```destination.domain.com.br```.
-
-- Crie um S3 com o nome ```origin.domain.com```;
-
-- Em *propriedades* do bucket habilite a *Hospedagem de site estático* e defina o redirecionamento para ```destination.domain.com.br```;
-
-- No Route53 crie uma entrada ```origin``` do tipo ```A``` para o Alias do bucket criado acima.
+## Redirecionar tráfego HTTP
+[Redirecionar o tráfego HTTP utilizando buckets S3 e Route53 (sem código).](S3RedirectHTTP/README.md)
